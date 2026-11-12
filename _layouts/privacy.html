@@ -1,0 +1,279 @@
+{%- comment -%}
+  모든 앱이 같이 쓰는 개인정보처리방침 본문입니다.
+  앱마다 다른 내용은 각 앱의 .md 파일(front matter)에서 가져옵니다.
+  공통 문구를 고치면 모든 앱 페이지에 한 번에 반영됩니다.
+{%- endcomment -%}
+{%- assign dev = site.developer | default: "CoderStudios" -%}
+{%- assign mail = page.email | default: site.email -%}
+{%- assign n = 0 -%}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>{{ page.app_name | escape }} 개인정보처리방침</title>
+<meta name="description" content="{{ page.app_name | escape }} 앱의 개인정보처리방침">
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --text:#1f2430; --muted:#6b7280; --line:#e6e8ec;
+    --accent:#2563eb; --th:#f1f5fe; --soft:#eef3fe; --soft-line:#d6e2fd;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo",
+      "Noto Sans KR",Roboto,"Malgun Gothic",sans-serif;
+    line-height:1.75; font-size:16px; word-break:keep-all; overflow-wrap:break-word;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:40px 16px 80px}
+  header{margin-bottom:24px}
+  .brand{font-size:14px; color:var(--accent); font-weight:700; letter-spacing:.02em}
+  h1{font-size:26px; margin:8px 0 6px; line-height:1.3}
+  .meta{color:var(--muted); font-size:14px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:28px 24px}
+  .card > :first-child{margin-top:0}
+  h2{font-size:18px; margin:32px 0 10px; line-height:1.45}
+  p{margin:10px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:6px 0}
+  .muted{color:var(--muted)}
+  .sub{display:block; font-size:13px; color:var(--muted)}
+  a{color:var(--accent)}
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:15px}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top}
+  th{background:var(--th); font-weight:700; white-space:nowrap}
+  .callout{background:var(--soft); border:1px solid var(--soft-line); border-radius:12px; padding:14px 16px; margin:16px 0; font-size:15px}
+  .callout p{margin:4px 0}
+  .callout .title{font-weight:700}
+  footer{margin-top:24px; color:var(--muted); font-size:13px; text-align:center}
+  @media (max-width:560px){
+    .card{padding:22px 18px}
+    h1{font-size:23px}
+    table.stack, table.stack tbody, table.stack tr, table.stack td{display:block; width:100%}
+    table.stack thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+    table.stack tr{border:1px solid var(--line); border-radius:12px; padding:8px 14px; margin:10px 0}
+    table.stack td{border:0; padding:5px 0}
+    table.stack td::before{content:attr(data-label); display:block; font-size:12px; font-weight:700; color:var(--muted)}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#12141a; --card:#1a1d25; --text:#e6e8ec; --muted:#9aa2af; --line:#2a2e38;
+      --accent:#7aa2ff; --th:#1f2536; --soft:#1b2440; --soft-line:#2c3a66}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">{{ page.app_name }}</div>
+  <h1>개인정보처리방침</h1>
+  <div class="meta">시행일: {{ page.effective_date }}{% if page.updated_date %} · 최종 수정일: {{ page.updated_date }}{% endif %}</div>
+</header>
+
+<main class="card">
+<p>{{ dev }}(이하 "개발자")는 {% if page.app_desc %}{{ page.app_desc }} {% endif %}'{{ page.app_name }}'(이하 "앱") 이용자의 개인정보를 소중하게 생각하며, 「개인정보 보호법」 등 관련 법령을 준수합니다. 본 개인정보처리방침은 앱이 어떤 정보를 어떤 목적으로 처리하고 어떻게 보관·파기하는지를 안내합니다.</p>
+{%- if page.summary %}
+<div class="callout"><p class="title">핵심 요약</p>{{ page.summary | markdownify }}</div>
+{%- endif %}
+
+{%- comment %} ───── 수집 항목 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 수집하는 개인정보 항목 및 수집 방법</h2>
+{%- if page.items_intro %}
+{{ page.items_intro | markdownify }}
+{%- else %}
+<p>앱은 서비스 제공을 위해 아래 정보를 처리합니다.</p>
+{%- endif %}
+{%- if page.items and page.items.size > 0 %}
+{%- comment %} 앱 파일에 쓴 칸만 표에 보여줌 {% endcomment %}
+{%- assign c_type = false %}{% assign c_why = false %}{% assign c_how = false %}{% assign c_where = false %}
+{%- for it in page.items %}
+{%- if it.type %}{% assign c_type = true %}{% endif %}
+{%- if it.why %}{% assign c_why = true %}{% endif %}
+{%- if it.how %}{% assign c_how = true %}{% endif %}
+{%- if it.where %}{% assign c_where = true %}{% endif %}
+{%- endfor %}
+<table class="stack">
+<thead><tr>{% if c_type %}<th>구분</th>{% endif %}<th>항목</th>{% if c_why %}<th>목적</th>{% endif %}{% if c_how %}<th>수집 방법</th>{% endif %}{% if c_where %}<th>저장 위치</th>{% endif %}</tr></thead>
+<tbody>
+{%- for it in page.items %}
+<tr>
+  {%- if c_type %}<td data-label="구분">{{ it.type | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>{% endif %}
+  <td data-label="항목">{{ it.data | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>
+  {%- if c_why %}<td data-label="목적">{{ it.why | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>{% endif %}
+  {%- if c_how %}<td data-label="수집 방법">{{ it.how | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>{% endif %}
+  {%- if c_where %}<td data-label="저장 위치">{{ it.where | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>{% endif %}
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif %}
+{%- if page.items_note %}
+<div class="muted">{{ page.items_note | markdownify }}</div>
+{%- endif %}
+
+{%- comment %} ───── 저장 위치 (선택) ───── {% endcomment %}
+{%- if page.storage %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보의 저장 위치</h2>
+{{ page.storage | markdownify }}
+{%- endif %}
+
+{%- comment %} ───── 이용 목적 ───── {% endcomment %}
+{%- if page.purposes %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보의 이용 목적</h2>
+{{ page.purposes | markdownify }}
+{%- endif %}
+
+{%- comment %} ───── 보유 및 파기 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보의 보유 및 파기</h2>
+{%- if page.retention %}
+{{ page.retention | markdownify }}
+{%- endif %}
+<p>전자적 파일 형태의 정보는 복구할 수 없는 기술적 방법으로 삭제합니다.</p>
+
+{%- comment %} ───── 위탁 (및 국외 이전) ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보 처리의 위탁{% if page.overseas %} 및 국외 이전{% endif %}</h2>
+{%- if page.processors and page.processors.size > 0 %}
+{%- if page.processors_intro %}
+{{ page.processors_intro | markdownify }}
+{%- else %}
+<p>앱은 서비스 제공을 위해 아래 외부 서비스를 이용합니다.</p>
+{%- endif %}
+{%- assign c_data = false %}
+{%- for p in page.processors %}{% if p.data %}{% assign c_data = true %}{% endif %}{% endfor %}
+<table class="stack">
+<thead><tr><th>수탁자{% if page.overseas %}(이전받는 자){% endif %}</th><th>위탁 업무</th>{% if c_data %}<th>처리 항목</th>{% endif %}</tr></thead>
+<tbody>
+{%- for p in page.processors %}
+<tr>
+  <td data-label="수탁자">{{ p.name }}{% if p.service %}<span class="sub">{{ p.service }}</span>{% endif %}</td>
+  <td data-label="위탁 업무">{{ p.task | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>
+  {%- if c_data %}<td data-label="처리 항목">{{ p.data | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>{% endif %}
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- else %}
+<p>개발자는 개인정보 처리 업무를 외부에 위탁하지 않습니다.</p>
+{%- endif %}
+{%- if page.processors_note %}
+{{ page.processors_note | markdownify }}
+{%- endif %}
+{%- if page.overseas %}
+{{ page.overseas | markdownify }}
+{%- endif %}
+
+{%- comment %} ───── 제3자 제공 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보의 제3자 제공</h2>
+{%- if page.third_party %}
+{{ page.third_party | markdownify }}
+{%- else %}
+<p>개발자는 이용자의 개인정보를 제3자에게 판매하거나 제공하지 않습니다. 다만 이용자가 사전에 동의하거나 법령에 특별한 규정이 있는 경우는 예외로 합니다.</p>
+{%- endif %}
+
+{%- comment %} ───── 앱별 추가 조항 ───── {% endcomment %}
+{%- for s in page.sections %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. {{ s.title }}</h2>
+{{ s.body | markdownify }}
+{%- endfor %}
+
+{%- comment %} ───── 접근 권한 (선택) ───── {% endcomment %}
+{%- if page.permissions %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 앱 접근 권한</h2>
+{%- if page.permissions == "none" %}
+<p>앱은 별도의 기기 접근 권한(카메라, 위치, 연락처 등)을 요구하지 않습니다.</p>
+{%- else %}
+<p>앱은 아래 접근 권한을 요청합니다.</p>
+{%- assign c_need = false %}
+{%- for p in page.permissions %}{% if p.need %}{% assign c_need = true %}{% endif %}{% endfor %}
+<table class="stack">
+<thead><tr><th>권한</th>{% if c_need %}<th>구분</th>{% endif %}<th>이용 목적</th></tr></thead>
+<tbody>
+{%- for p in page.permissions %}
+<tr>
+  <td data-label="권한">{{ p.name }}</td>
+  {%- if c_need %}<td data-label="구분">{{ p.need }}</td>{% endif %}
+  <td data-label="이용 목적">{{ p.why | markdownify | remove: "<p>" | remove: "</p>" | strip }}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif %}
+{%- if page.permissions_note %}
+{{ page.permissions_note | markdownify }}
+{%- endif %}
+{%- endif %}
+
+{%- comment %} ───── 이용자 권리 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 이용자의 권리와 행사 방법</h2>
+{%- if page.rights %}
+{{ page.rights | markdownify }}
+{%- else %}
+<ul>
+<li>이용자는 언제든지 자신의 개인정보에 대한 열람·정정·삭제·처리정지를 요청할 수 있습니다.</li>
+<li>앱을 삭제하면 기기에 저장된 정보가 함께 삭제됩니다.</li>
+<li>개인정보 관련 문의·요청은 아래 문의처로 연락해 주세요.</li>
+</ul>
+{%- endif %}
+
+{%- comment %} ───── 아동 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 아동의 개인정보</h2>
+{%- if page.children %}
+{{ page.children | markdownify }}
+{%- else %}
+<p>앱은 만 14세 미만 아동을 주 대상으로 하지 않으며, 아동의 개인정보를 고의로 수집하지 않습니다. 만 14세 미만 아동의 개인정보가 수집된 사실을 알게 된 경우 지체 없이 삭제합니다.</p>
+{%- endif %}
+
+{%- comment %} ───── 안전성 확보 조치 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보의 안전성 확보 조치</h2>
+{%- if page.safety %}
+{{ page.safety | markdownify }}
+{%- else %}
+<ul>
+<li>개인정보는 서비스 제공에 필요한 최소한의 범위에서만 처리합니다.</li>
+<li>외부 서비스와 통신하는 경우 암호화(HTTPS)된 구간을 이용합니다.</li>
+<li>접근 권한은 서비스 제공에 필요한 최소한의 범위로만 요청합니다.</li>
+</ul>
+{%- endif %}
+
+{%- comment %} ───── 문의처 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보 보호책임자 및 문의처</h2>
+<p>개인정보 처리에 관한 문의, 불만 처리, 피해 구제, 열람·정정·삭제 요청 등은 아래로 연락해 주세요.</p>
+<ul>
+<li>개발자: {{ dev }}</li>
+<li>이메일: <a href="mailto:{{ mail }}">{{ mail }}</a></li>
+</ul>
+
+{%- comment %} ───── 권익침해 구제 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 권익침해 구제 방법</h2>
+<p>개인정보 침해에 대한 상담이나 신고가 필요한 경우 아래 기관에 문의할 수 있습니다.</p>
+<ul>
+<li>개인정보분쟁조정위원회: (국번없이) 1833-6972 · <a href="https://www.kopico.go.kr">www.kopico.go.kr</a></li>
+<li>개인정보침해신고센터: (국번없이) 118 · <a href="https://privacy.kisa.or.kr">privacy.kisa.or.kr</a></li>
+<li>대검찰청: (국번없이) 1301 · <a href="https://www.spo.go.kr">www.spo.go.kr</a></li>
+<li>경찰청: (국번없이) 182 · <a href="https://ecrm.police.go.kr">ecrm.police.go.kr</a></li>
+</ul>
+
+{%- comment %} ───── 변경 ───── {% endcomment %}
+{%- assign n = n | plus: 1 %}
+<h2>{{ n }}. 개인정보처리방침의 변경</h2>
+<p>본 방침은 법령·서비스 정책의 변경에 따라 개정될 수 있으며, 변경 시 앱 내 공지 또는 본 페이지를 통해 안내합니다.</p>
+<p>본 방침은 {{ page.effective_date }}부터 시행됩니다.</p>
+</main>
+
+<footer>© {{ site.time | date: "%Y" }} {{ dev }} · {{ page.app_name }}</footer>
+</div>
+</body>
+</html>
