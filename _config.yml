@@ -1,0 +1,12 @@
+# 모든 앱에 공통으로 들어가는 값
+developer: CoderStudios
+email: coderstudiosdevelopers@gmail.com
+
+# 이 사이트 주소 (레포 이름을 바꾸면 baseurl도 같이 바꿔 주세요)
+url: https://coderstudiosdevelopers-coder.github.io
+baseurl: /privacy
+
+lang: ko
+
+exclude:
+  - README.md
